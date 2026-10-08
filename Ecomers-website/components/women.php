@@ -1,0 +1,801 @@
+<?php
+
+$shopByCategory = [
+    [
+        'id' => 1,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl_2.jpg",
+        'images' => [
+            "images/cloth_girl_2.jpg",
+            "images/cloth_girl3.jpg",
+            "images/cloth_girl4.jpg",
+            "images/cloth_girl5.jpg",
+            "images/cloth_girl6.jpg"
+        ]
+    ],
+    [
+        'id' => 2,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl15.jpg",
+        'images' => [
+            "images/cloth_girl15.jpg",
+            "images/cloth_girl16.jpg",
+            "images/cloth_girl17.jpg",
+            "images/cloth_girl18.jpg",
+            "images/cloth_girl19.jpg"
+        ]
+    ],
+    [
+        'id' => 3,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth1.jpg",
+        'images' => [
+            "images/cloth1.jpg",
+            "images/cloth2.jpg",
+            "images/cloth_3.jpg",
+            "images/cloth_4.jpg",
+            "images/cloth_girl7.jpg"
+        ]
+    ],
+    [
+        'id' => 4,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl8.jpg",
+        'images' => [
+            "images/cloth_girl8.jpg",
+            "images/cloth_girl9.jpg",
+            "images/cloth_girl10.jpg",
+            "images/cloth_girl11.jpg",
+            "images/cloth_girl14.jpg"
+        ]
+    ],
+];
+
+$newArrivals = [
+    [
+        'id' => 5,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl_20.jpg",
+        'images' => [
+            "images/cloth_girl_20.jpg",
+            "images/cloth_girl_21.jpg",
+            "images/cloth_girl_22.jpg",
+            "images/cloth_girl_23.jpg",
+            "images/cloth_girl_24.jpg"
+        ]
+    ],
+    [
+        'id' => 6,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl_25.jpg",
+        'images' => [
+            "images/cloth_girl_25.jpg",
+            "images/cloth_girl_26.jpg",
+            "images/cloth_girl_27.jpg",
+            "images/cloth_girl_28.jpg",
+            "images/cloth_girl_29.jpg"
+        ]
+    ],
+    [
+        'id' => 7,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/cloth_girl_30.jpg",
+        'images' => [
+            "images/cloth_girl_30.jpg",
+            "images/cloth_girl_31.jpg",
+            "images/cloth_girl_32.jpg",
+            "images/cloth_girl_33.jpg",
+            "images/cloth_girl_34.jpg"
+        ]
+    ],
+    [
+        'id' => 8,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/jean.jpg",
+        'images' => [
+            "images/jean.jpg",
+            "images/jean4.jpg",
+            "images/jean1.jpg",
+            "images/jean2.jpg",
+            "images/jean3.jpg"
+        ]
+    ],
+];
+
+$bestSellers = [
+    [
+        'id' => 9,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/skert1.jpg",
+        'images' => [
+            "images/skert1.jpg",
+            "images/skert2.jpg",
+            "images/skert3.jpg",
+            "images/skert4.jpg",
+            "images/skert5.jpg"
+        ]
+    ],
+    [
+        'id' => 10,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/jacket1.jpg",
+        'images' => [
+            "images/jacket1.jpg",
+            "images/jacket2.jpg",
+            "images/jacket3.jpg",
+            "images/jacket4.jpg",
+            "images/jacket5.jpg"
+        ]
+    ],
+    [
+        'id' => 11,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/hoodie1.jpg",
+        'images' => [
+            "images/hoodie1.jpg",
+            "images/hoodie2.jpg",
+            "images/hoodie3.jpg",
+            "images/hoodie4.jpg",
+            "images/hoodie5.jpg"
+        ]
+    ],
+    [
+        'id' => 12,
+        'price' => 30.95,
+        'title' => "Baggy Denim & White Shirt Look",
+        'image' => "images/sweater1.jpg",
+        'images' => [
+            "images/sweater1.jpg",
+            "images/sweater2.jpg",
+            "images/sweater3.jpg",
+            "images/sweater4.jpg",
+            "images/sweater5.jpg"
+        ]
+    ],
+];
+
+function renderSection($id, $title, $products = [])
+{
+    // ការពារ Error ប្រសិនបើ $products គ្មានទិន្នន័យ ឬ NULL
+    $products = is_array($products) ? array_slice($products, 0, 4) : [];
+    ?>
+    <section id="<?php echo $id; ?>" class="section-container">
+        <h2 class="section-title">
+            <?php echo $title; ?> <span class="sparkle-icon">✨</span>
+        </h2>
+
+        <div class="slider-wrapper">
+            <div class="slider-overflow">
+                <div id="slider-track-<?php echo $id; ?>" class="slider-track">
+                    <?php foreach ($products as $idx => $product): ?>
+                        <div class="product-card-wrapper">
+                            <div class="product-card">
+                                <div class="product-image-container"
+                                     onclick="viewProductDetail(<?php echo htmlspecialchars(json_encode($product)); ?>)">
+                                    <img src="<?php echo $product['image']; ?>"
+                                         alt="<?php echo htmlspecialchars($product['title']); ?>" class="product-image" />
+                                </div>
+                                <div class="product-details">
+                                    <div class="product-header">
+                                        <span class="product-price">US $<?php echo number_format($product['price'], 2); ?></span>
+                                        <button class="wishlist-btn" onclick="toggleWishlist(this)" aria-label="Wishlist">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                                 stroke="currentColor" stroke-width="1.8" class="heart-icon">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                      d="M21 8.25c0-2.485-2.099-4.575-4.688-4.575-1.688 0-3.153.86-4.012 2.149-.859-1.289-2.324-2.149-4.012-2.149C5.7 3.675 3.6 5.765 3.6 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <p class="product-title"
+                                       onclick="viewProductDetail(<?php echo htmlspecialchars(json_encode($product)); ?>)">
+                                        <?php echo htmlspecialchars($product['title']); ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+}
+?>
+
+<!DOCTYPE html>
+<html lang="km">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .catalog-container {
+            width: 92%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 110px;
+            padding-bottom: 60px;
+        }
+
+        .section-container {
+            margin-bottom: 40px;
+        }
+
+        .section-container:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #0f172a;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sparkle-icon {
+            font-size: 1.2rem;
+        }
+
+        .slider-track {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .product-card-wrapper {
+            width: calc(25% - 15px);
+            flex-shrink: 0;
+        }
+
+        .product-card {
+            background: #f4f5f7;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease-in-out;
+            will-change: transform;
+        }
+
+        .product-image-container:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: #f4f5f7;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-weight: 800;
+            font-size: 1.05rem;
+            color: #0d121c;
+        }
+
+        .product-title {
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.88rem;
+            color: #4b5563;
+            line-height: 1.3;
+        }
+
+        .wishlist-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8c96a6;
+        }
+
+        .heart-icon {
+            width: 20px;
+            height: 20px;
+            transition: color 0.2s ease, fill 0.2s ease;
+        }
+
+        .wishlist-btn.active .heart-icon {
+            color: #ef4444;
+            fill: #ef4444;
+        }
+
+        #detailPage {
+            display: none;
+            width: 92%;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding-top: 10px;
+        }
+
+        #detailPage.active {
+            display: grid !important;
+            grid-template-columns: auto auto 1fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 850px) {
+            #detailPage.active {
+                grid-template-columns: 1fr;
+            }
+            .product-card-wrapper {
+                width: calc(50% - 10px);
+            }
+        }
+
+        .thumbnails-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .thumb-img {
+            width: 75px;
+            height: 90px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 6px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            background-color: #f3f4f6;
+            transition: all 0.2s ease;
+        }
+
+        .thumb-img.active {
+            border-color: #000000;
+        }
+
+        .main-image-sec {
+            background-color: #f9fafb;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .main-image-sec img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            object-position: top;
+            border-radius: 6px;
+        }
+
+        .product-info-sec {
+            padding: 0 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .price-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .current-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ef4444;
+        }
+
+        .old-price {
+            font-size: 1.1rem;
+            color: #9ca3af;
+            text-decoration: line-through;
+        }
+
+        .product-name-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            text-transform: uppercase;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .color-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .color-box:hover {
+            transform: scale(1.15);
+        }
+
+        .color-box.active {
+            border-color: #000000;
+            transform: scale(1.1);
+        }
+
+        .size-options {
+            display: flex;
+            gap: 8px;
+        }
+
+        .size-btn {
+            padding: 8px 16px;
+            background-color: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .size-btn:hover {
+            background-color: #e5e7eb;
+        }
+
+        .size-btn.active {
+            background-color: #374151;
+            color: #ffffff;
+            border-color: #374151;
+            font-weight: 600;
+        }
+
+        .qty-controls-row {
+            display: flex;
+            align-items: center;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            width: fit-content;
+            overflow: hidden;
+            background-color: #f9fafb;
+        }
+
+        .qty-btn-action {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .qty-display-val {
+            padding: 6px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .btn-add-cart-full {
+            width: 100%;
+            background-color: #6B8A85;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            margin-top: 10px;
+        }
+
+        .btn-add-cart-full:hover {
+            background-color: #41796f;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            background: none;
+            border: none;
+            color: #4b5563;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <?php if (file_exists('../Layout/Header.php')) include '../Layout/Header.php'; ?>
+
+    <!-- Catalog Page Container (បង្ហាញត្រឹមតែ 3 Rows) -->
+    <div id="catalogPage" class="catalog-container">
+        <?php renderSection('women', 'Shop by Category', $shopByCategory); ?>
+        <?php renderSection('man', 'New Arrivals', $newArrivals); ?>
+        <?php renderSection('bags', 'Best Sellers', $bestSellers); ?>
+    </div>
+
+    <!-- Product Detail Page Layout -->
+    <div id="detailPage" class="detail-view-container">
+        <div>
+            <button class="back-btn" onclick="backToCatalog()">← back</button>
+            <div id="thumbnailsContainer" class="thumbnails-list"></div>
+        </div>
+
+        <div class="main-image-sec">
+            <img id="detailMainImg" src="" alt="Product Detail">
+        </div>
+
+        <div class="product-info-sec">
+            <div class="price-row">
+                <span id="detailPrice" class="current-price"></span>
+                <span class="old-price">$29.99</span>
+            </div>
+
+            <h2 id="detailTitle" class="product-name-title"></h2>
+
+            <div class="option-group">
+                <span class="option-label">Select Colors</span>
+                <div class="color-options">
+                    <div class="color-box" style="background-color: #000000;" onclick="selectColor(this)"></div>
+                    <div class="color-box" style="background-color: #ef4444;" onclick="selectColor(this)"></div>
+                    <div class="color-box" style="background-color: #6b7280;" onclick="selectColor(this)"></div>
+                    <div class="color-box" style="background-color: #3b82f6;" onclick="selectColor(this)"></div>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <span class="option-label">Size</span>
+                <div class="size-options">
+                    <button class="size-btn" onclick="selectSize(this)">S</button>
+                    <button class="size-btn" onclick="selectSize(this)">M</button>
+                    <button class="size-btn" onclick="selectSize(this)">L</button>
+                    <button class="size-btn" onclick="selectSize(this)">XL</button>
+                    <button class="size-btn" onclick="selectSize(this)">XXL</button>
+                </div>
+            </div>
+
+            <div class="option-group">
+                <span class="option-label">Quantity</span>
+                <div class="qty-controls-row">
+                    <button class="qty-btn-action" onclick="updateQty(-1)">-</button>
+                    <span id="detailQty" class="qty-display-val">1</span>
+                    <button class="qty-btn-action" onclick="updateQty(1)">+</button>
+                </div>
+            </div>
+
+            <button class="btn-add-cart-full" onclick="addToCart()">Add To Cart</button>
+        </div>
+    </div>
+
+    <script>
+        let currentProduct = null;
+        let qty = 1;
+        let selectedColor = '';
+        let selectedSize = '';
+
+        function toggleWishlist(btn) {
+            btn.classList.toggle('active');
+        }
+
+        function viewProductDetail(product) {
+            currentProduct = product;
+            qty = 1;
+
+            document.getElementById('detailMainImg').src = product.image;
+            document.getElementById('detailTitle').innerText = product.title;
+            document.getElementById('detailPrice').innerText = `US $${product.price.toFixed(2)}`;
+            document.getElementById('detailQty').innerText = qty;
+
+            const thumbsContainer = document.getElementById('thumbnailsContainer');
+            thumbsContainer.innerHTML = '';
+
+            let imageList = (product.images && Array.isArray(product.images) && product.images.length > 0)
+                ? product.images
+                : [product.image];
+
+            imageList.forEach((imgSrc, index) => {
+                const imgElem = document.createElement('img');
+                imgElem.src = imgSrc;
+                imgElem.className = `thumb-img ${index === 0 ? 'active' : ''}`;
+                imgElem.onclick = function () {
+                    setMainImage(imgSrc, this);
+                };
+                thumbsContainer.appendChild(imgElem);
+            });
+
+            resetAndSelectDefaults();
+
+            document.getElementById('catalogPage').style.display = 'none';
+            document.getElementById('detailPage').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function setMainImage(src, activeThumb) {
+            document.getElementById('detailMainImg').src = src;
+
+            document.querySelectorAll('.thumb-img').forEach(thumb => thumb.classList.remove('active'));
+            if (activeThumb) activeThumb.classList.add('active');
+        }
+
+        function selectColor(element) {
+            document.querySelectorAll('.color-box').forEach(box => box.classList.remove('active'));
+            element.classList.add('active');
+            selectedColor = element.style.backgroundColor;
+        }
+
+        function selectSize(element) {
+            document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            selectedSize = element.innerText;
+        }
+
+        function resetAndSelectDefaults() {
+            const firstColor = document.querySelector('.color-box');
+            if (firstColor) selectColor(firstColor);
+
+            const firstSize = document.querySelector('.size-btn');
+            if (firstSize) selectSize(firstSize);
+        }
+
+        function backToCatalog() {
+            document.getElementById('detailPage').classList.remove('active');
+            document.getElementById('catalogPage').style.display = 'block';
+        }
+
+        function updateQty(change) {
+            qty = Math.max(1, qty + change);
+            document.getElementById('detailQty').innerText = qty;
+
+            if (currentProduct) {
+                const totalPrice = currentProduct.price * qty;
+                document.getElementById('detailPrice').innerText = `US $${totalPrice.toFixed(2)}`;
+            }
+        }
+
+        function updateCartBadge(count) {
+            const cartBtn = document.getElementById('cartBtn');
+            if (!cartBtn) return;
+
+            const cartContainer = cartBtn.parentElement;
+            let badge = cartContainer.querySelector('.cart-badge');
+
+            if (count <= 0) {
+                if (badge) badge.remove();
+                return;
+            }
+
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'cart-badge';
+                cartContainer.appendChild(badge);
+            }
+
+            badge.textContent = count;
+            badge.style.display = 'flex';
+        }
+
+        function addToCart() {
+            if (!currentProduct) {
+                alert('សូមជ្រើសរើស Product ជាមុនសិន។');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('action', 'add_to_cart');
+            formData.append('id', currentProduct.id);
+            formData.append('name', currentProduct.title);
+            formData.append('price', currentProduct.price);
+            formData.append('image', currentProduct.image);
+            formData.append('quantity', qty);
+            formData.append('size', selectedSize);
+            formData.append('color', selectedColor);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Server error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (!data.success) {
+                    throw new Error('Product was not added to cart.');
+                }
+
+                updateCartBadge(data.cartCount);
+
+                alert(
+                    `បានបន្ថែម ${currentProduct.title}\n` +
+                    `Size: ${selectedSize}\n` +
+                    `Color: ${selectedColor}\n` +
+                    `ចំនួន: ${qty}\n\n` +
+                    `បានបន្ថែមទៅក្នុង Cart!`
+                );
+
+                // Reload so Header reads the latest PHP session cart.
+                window.location.reload();
+            })
+            .catch(error => {
+                console.error('Add to cart error:', error);
+                alert('មានបញ្ហាក្នុងការបន្ថែម Product ទៅ Cart។ សូមព្យាយាមម្ដងទៀត។');
+            });
+        }
+    </script>
+</body>
+
+</html>
+
+
+
