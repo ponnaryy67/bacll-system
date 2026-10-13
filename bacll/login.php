@@ -44,11 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php if(!empty($error)): ?>
             <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
-        <form method="POST" action="">
-            <input type="text" name="username" placeholder="username" required><br>
-            <input type="password" name="password" placeholder="password"><br>
+        <form method="POST" action="" autocomplete="off">
+            <input type="text" name="username" placeholder="username" autocomplete="off" required><br>
+            <input type="password" name="password" placeholder="password" autocomplete="new-password" required><br>
             <div class="btn-group">
-                <button type="submit">Login</button>
+                <button type="submit" name="login">Login</button>
                 <a href="register.php"><button type="button">Register</button></a>
             </div>
         </form>
