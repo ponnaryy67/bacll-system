@@ -4,12 +4,18 @@ $user = "root";
 $password = "";
 $dbname = "bac_system";
 
-// ប្រើប្រាស់ @ ដើម្បីកុំឱ្យវាចេញ Error ក្រហមផ្អើលពេញ Server ពេលតភ្ជាប់មិនកើត
-$conn = @new mysqli($host, $user, $password, $dbname);
+$conn = null;
 
-// យើងមិនប្រើ die() ទេ ដើម្បីឱ្យវេបសាយនៅតែអាចដំណើរការបន្តបាន
-if ($conn->connect_error) {
-    $conn = null; 
+try {
+    // ព្យាយាមតភ្ជាប់ដោយចាប់យក Exception ទុក ប្រសិនបើរក Server មិនឃើញ
+    $conn = @new mysqli($host, $user, $password, $dbname);
+} catch (\mysqli_sql_exception $e) {
+    $conn = null;
+}
+
+// ករណីមាន connect_error ផ្សេងទៀត
+if ($conn && $conn->connect_error) {
+    $conn = null;
 }
 ?>
 
