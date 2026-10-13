@@ -2,19 +2,28 @@
 session_start();
 require_once 'db.php';
 
+$message = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $track = $_POST['track'];
 
     if (!empty($name) && !empty($email) && !empty($track)) {
-        $stmt = $conn->prepare("INSERT INTO students (name, email, track) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $name, $email, $track);
-        
-        if ($stmt->execute()) {
+        // ឆែកមើលថាតើ Database បានតភ្ជាប់ឬអត់
+        if ($conn) {
+            $stmt = $conn->prepare("INSERT INTO students (name, email, track) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $name, $email, $track);
+            
+            if ($stmt->execute()) {
+                $stmt->close();
+                echo '<script>window.location.href = "student_list.php";</script>';
+                exit();
+            }
             $stmt->close();
-           
-            header("Location: student_list.php");
+        } else {
+            // ករណីគ្មាន Database (ពេលនៅលើយកទៅ Deploy លើ Render) ឱ្យវាលោតទៅ student_list ហ្វ្រីៗដើម្បី Test UI តែម្តង
+            echo '<script>window.location.href = "student_list.php";</script>';
             exit();
         }
     }
@@ -27,9 +36,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     <meta charset="UTF-8">
     <title>Add Student</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9fafb; }
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f9fafb; display: flex; justify-content: center; align-items: center; height: 80vh; }
         .form-card { background: white; padding: 25px; border-radius: 8px; width: 320px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        h2 { margin-top: 0; color: #1f2937; }
+        h2 { margin-top: 0; color: #1f2937; text-align: center; }
         label { display: block; margin-top: 10px; font-weight: bold; color: #374151; }
         input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #d1d5db; border-radius: 4px; box-sizing: border-box; }
         button { background: #10b981; color: white; border: none; padding: 10px 15px; margin-top: 15px; width: 100%; border-radius: 4px; font-weight: bold; cursor: pointer; }
@@ -40,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
     <div class="form-card">
         <h2>Add New Student</h2>
-   
+        
         <form action="student_add.php" method="POST">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required placeholder="Enter student name">
@@ -60,6 +69,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
 
 </body>
 </html>
-
 
 
