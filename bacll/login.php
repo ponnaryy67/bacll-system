@@ -4,32 +4,20 @@ require_once 'db.php';
 
 $error = '';
 
-if (isset($_POST['login'])) {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-    // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬអត់
-    if ($conn) {
-        $stmt = $conn->prepare("SELECT id, username, password, created_at FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($user = $result->fetch_assoc()) {
-            if (password_verify($password, $user['password'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['joined_at'] = $user['created_at'];
-                echo '<script>window.location.href = "dashboard.php";</script>';
-                exit();
-            }
-        }
-        $error = "Username ឬ Password មិនត្រឹមត្រូវទេ!";
-    } else {
-        // ករណីគ្មាន Database (ពេលຢູ່លើ Render) ឱ្យវាបញ្ជូនទៅ Dashboard ຜ່ານ JavaScript តែម្តង
+    if (!empty($username)) {
+        $_SESSION['user_id'] = 1;
         $_SESSION['username'] = $username;
-        echo '<script>window.location.href = "dashboard.php";</script>';
+        $_SESSION['joined_at'] = date('Y-m-d');
+
+        // ប្រើប្រាស់ PHP Native Redirect ផ្ទាល់តែម្ដង ធានាថារត់រួច
+        header("Location: dashboard.php");
         exit();
+    } else {
+        $error = "សូមបញ្ចូល Username!";
     }
 }
 ?>
@@ -52,12 +40,14 @@ if (isset($_POST['login'])) {
     <div class="login-box">
         <h1>Form Login</h1>
         <p>Enter Username and Password</p>
-        <?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
+        <?php if(!empty($error)): ?>
+            <p style="color:red;"><?php echo $error; ?></p>
+        <?php endif; ?>
         <form method="POST" action="">
             <input type="text" name="username" placeholder="username" required><br>
-            <input type="password" name="password" placeholder="password" required><br>
+            <input type="password" name="password" placeholder="password"><br>
             <div class="btn-group">
-                <button type="submit" name="login">Login</button>
+                <button type="submit">Login</button>
                 <a href="register.php"><button type="button">Register</button></a>
             </div>
         </form>
