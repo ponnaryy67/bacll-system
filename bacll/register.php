@@ -11,31 +11,38 @@ if (isset($_POST['register'])) {
     if (empty($username) || empty($raw_password)) {
         $message = "សូមបញ្ចូល Username និង Password!";
     } else {
-        // 1. Check if the username already exists
-        $check_stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
-        $check_stmt->bind_param("s", $username);
-        $check_stmt->execute();
-        $check_stmt->store_result();
+        // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬអត់
+        if ($conn) {
+            // 1. Check if the username already exists
+            $check_stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+            $check_stmt->bind_param("s", $username);
+            $check_stmt->execute();
+            $check_stmt->store_result();
 
-        if ($check_stmt->num_rows > 0) {
-            $message = "Username នេះមានរួចហើយ!";
-        } else {
-            // 2. Hash password and insert user
-            $password = password_hash($raw_password, PASSWORD_DEFAULT);
-            $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-            $stmt->bind_param("ss", $username, $password);
-
-            if ($stmt->execute()) {
-                $stmt->close();
-                $check_stmt->close();
-                header("Location: login.php");
-                exit();
+            if ($check_stmt->num_rows > 0) {
+                $message = "Username នេះមានរួចហើយ!";
             } else {
-                $message = "មានបញ្ហាក្នុងការចុះឈ្មោះ! សូមព្យាយាមម្តងទៀត។";
+                // 2. Hash password and insert user
+                $password = password_hash($raw_password, PASSWORD_DEFAULT);
+                $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
+                $stmt->bind_param("ss", $username, $password);
+
+                if ($stmt->execute()) {
+                    $stmt->close();
+                    $check_stmt->close();
+                    header("Location: login.php");
+                    exit();
+                } else {
+                    $message = "មានបញ្ហាក្នុងការចុះឈ្មោះ! សូមព្យាយាមម្តងទៀត។";
+                }
+                $stmt->close();
             }
-            $stmt->close();
+            $check_stmt->close();
+        } else {
+            // ករណីគ្មាន Database (ពេលຢູ່លើ Render) ឱ្យវាបញ្ជូនទៅកាន់ Login ហ្វ្រីៗដើម្បី Test UI តែម្ដង
+            header("Location: login.php");
+            exit();
         }
-        $check_stmt->close();
     }
 }
 ?>
@@ -68,6 +75,5 @@ if (isset($_POST['register'])) {
     </div>
 </body>
 </html>
-
 
 
