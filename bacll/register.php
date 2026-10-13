@@ -11,7 +11,6 @@ if (isset($_POST['register'])) {
     if (empty($username) || empty($raw_password)) {
         $message = "សូមបញ្ចូល Username និង Password!";
     } else {
-        // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬអត់
         if ($conn) {
             // 1. Check if the username already exists
             $check_stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
@@ -30,7 +29,7 @@ if (isset($_POST['register'])) {
                 if ($stmt->execute()) {
                     $stmt->close();
                     $check_stmt->close();
-                    header("Location: login.php");
+                    echo '<script>window.location.href = "login.php";</script>';
                     exit();
                 } else {
                     $message = "មានបញ្ហាក្នុងការចុះឈ្មោះ! សូមព្យាយាមម្តងទៀត។";
@@ -39,8 +38,8 @@ if (isset($_POST['register'])) {
             }
             $check_stmt->close();
         } else {
-            // ករណីគ្មាន Database (ពេលຢູ່លើ Render) ឱ្យវាបញ្ជូនទៅកាន់ Login ហ្វ្រីៗដើម្បី Test UI តែម្ដង
-            header("Location: login.php");
+            // ករណីគ្មាន Database (ពេលຢູ່លើ Render) ឱ្យវាបញ្ជូនទៅកាន់ Login ຜ່ານ JavaScript តែម្តង
+            echo '<script>window.location.href = "login.php";</script>';
             exit();
         }
     }
