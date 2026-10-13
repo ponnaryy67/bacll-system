@@ -2,30 +2,41 @@
 session_start();
 require_once 'db.php';
 
-$message = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $track = $_POST['track'];
 
     if (!empty($name) && !empty($email) && !empty($track)) {
-        // ឆែកមើលថាតើ Database បានតភ្ជាប់ឬអត់
         if ($conn) {
             $stmt = $conn->prepare("INSERT INTO students (name, email, track) VALUES (?, ?, ?)");
             $stmt->bind_param("sss", $name, $email, $track);
-            
-            if ($stmt->execute()) {
-                $stmt->close();
-                echo '<script>window.location.href = "student_list.php";</script>';
-                exit();
-            }
+            $stmt->execute();
             $stmt->close();
         } else {
-            // ករណីគ្មាន Database (ពេលនៅលើយកទៅ Deploy លើ Render) ឱ្យវាលោតទៅ student_list ហ្វ្រីៗដើម្បី Test UI តែម្តង
-            echo '<script>window.location.href = "student_list.php";</script>';
-            exit();
+            // ករណីគ្មាន Database (នៅលើ Render) យករาគា/ទិន្នន័យថ្មីនេះទៅបញ្ចូលក្នុង Session Demo វិញ
+            if (!isset($_SESSION['demo_students'])) {
+                $_SESSION['demo_students'] = [
+                    ['id' => 1, 'name' => 'Nary Pon', 'email' => 'nary@example.com', 'track' => 'Science Class Track'],
+                    ['id' => 2, 'name' => 'Dara Chan', 'email' => 'dara@example.com', 'track' => 'Social Class Track']
+                ];
+            }
+            
+            // បង្កើត ID ថ្មីដោយស្វ័យប្រវត្តិ
+            $new_id = count($_SESSION['demo_students']) > 0 ? end($_SESSION['demo_students'])['id'] + 1 : 1;
+            
+            // បន្ថែមសិស្សថ្មីចូលទៅក្នុង Array របស់ Session
+            $_SESSION['demo_students'][] = [
+                'id' => $new_id,
+                'name' => $name,
+                'email' => $email,
+                'track' => $track
+            ];
         }
+
+        // បញ្ជូនទៅកាន់ student_list.php ຜ່ານ JavaScript យ៉ាងរលូន
+        echo '<script>window.location.href = "student_list.php";</script>';
+        exit();
     }
 }
 ?>
