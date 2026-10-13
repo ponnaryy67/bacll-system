@@ -3,21 +3,9 @@ session_start();
 require_once 'db.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    echo '<script>window.location.href = "login.php";</script>';
     exit();
 }
-
-// ប្រតិបត្តិការ Delete Student
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $stmt = $conn->prepare("DELETE FROM students WHERE id = ?");
-    $stmt->bind_param("i", $id);
-    $stmt->execute();
-    header("Location: student_list.php");
-    exit();
-}
-
-$result = $conn->query("SELECT * FROM students ORDER BY id DESC");
 ?>
 
 <!DOCTYPE html>
