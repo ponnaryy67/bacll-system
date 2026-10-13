@@ -13,8 +13,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $username;
         $_SESSION['joined_at'] = date('Y-m-d');
 
-        // ប្រើប្រាស់ PHP Native Redirect ផ្ទាល់តែម្ដង ធានាថារត់រួច
-        header("Location: dashboard.php");
+        // ប្រើប្រាស់ JavaScript Redirect ធានាថាមិនចេញ Error headers already sent ទៀតទេ
+        echo '<script>window.location.href = "dashboard.php";</script>';
         exit();
     } else {
         $error = "សូមបញ្ចូល Username!";
@@ -54,6 +54,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 </html>
-
 
 
