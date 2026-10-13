@@ -7,11 +7,37 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-$students = [];
+// បង្កើត Session សម្រាប់ເກັບបញ្ជីសិស្ស Demo ពេលគ្មាន Database
+if (!isset($_SESSION['demo_students'])) {
+    $_SESSION['demo_students'] = [
+        ['id' => 1, 'name' => 'Nary Pon', 'email' => 'nary@example.com', 'track' => 'Science Class Track'],
+        ['id' => 2, 'name' => 'Dara Chan', 'email' => 'dara@example.com', 'track' => 'Social Class Track']
+    ];
+}
 
-// ឆែកមើលថាតើ Database មានដំណើរការឬអត់
+// មុខងារលុបសិស្ស (Delete)
+if (isset($_GET['delete'])) {
+    $delete_id = $_GET['delete'];
+    if ($conn) {
+        $stmt = $conn->prepare("DELETE FROM students WHERE id = ?");
+        $stmt->bind_param("i", $delete_id);
+        $stmt->execute();
+        $stmt->close();
+    } else {
+        // លុបចេញពី Session Demo វិញ
+        foreach ($_SESSION['demo_students'] as $key => $student) {
+            if ($student['id'] == $delete_id) {
+                unset($_SESSION['demo_students'][$key]);
+            }
+        }
+        $_SESSION['demo_students'] = array_values($_SESSION['demo_students']);
+    }
+    echo '<script>window.location.href = "student_list.php";</script>';
+    exit();
+}
+
+$students = [];
 if ($conn) {
-    // ករណីមាន Database ធម្មតា
     $result = $conn->query("SELECT * FROM students");
     if ($result) {
         while ($row = $result->fetch_assoc()) {
@@ -19,11 +45,7 @@ if ($conn) {
         }
     }
 } else {
-    // ករណីគ្មាន Database (ពេលຢູ່លើ Render) បង្កើតទិន្នន័យគំរូសម្រាប់ Demo UI
-    $students = [
-        ['id' => 1, 'name' => 'Nary Pon', 'email' => 'nary@example.com', 'track' => 'Science Class Track'],
-        ['id' => 2, 'name' => 'Dara Chan', 'email' => 'dara@example.com', 'track' => 'Social Class Track']
-    ];
+    $students = $_SESSION['demo_students'];
 }
 ?>
 

@@ -3,14 +3,9 @@ session_start();
 require_once 'db.php';
 
 $id = $_GET['id'] ?? 1;
+$student = ['name' => '', 'email' => '', 'track' => 'Science Class Track'];
 
-// តម្លៃគំរូដើមសម្រាប់ Demo ពេលគ្មាន Database
-$student = [
-    'name' => 'Demo Student',
-    'email' => 'demo@example.com',
-    'track' => 'Science Class Track'
-];
-
+// ស្វែងរកទិន្នន័យសិស្សចាស់ដើម្បីយកមកបង្ហាញក្នុង Form
 if ($conn) {
     $stmt = $conn->prepare("SELECT * FROM students WHERE id = ?");
     if ($stmt) {
@@ -22,8 +17,18 @@ if ($conn) {
         }
         $stmt->close();
     }
+} else {
+    if (isset($_SESSION['demo_students'])) {
+        foreach ($_SESSION['demo_students'] as $s) {
+            if ($s['id'] == $id) {
+                $student = $s;
+                break;
+            }
+        }
+    }
 }
 
+// ពេលចុច Update ទិន្នន័យ
 if (isset($_POST['update'])) {
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
@@ -36,9 +41,19 @@ if (isset($_POST['update'])) {
             $stmt->execute();
             $stmt->close();
         }
+    } else {
+        if (isset($_SESSION['demo_students'])) {
+            foreach ($_SESSION['demo_students'] as &$s) {
+                if ($s['id'] == $id) {
+                    $s['name'] = $name;
+                    $s['email'] = $email;
+                    $s['track'] = $track;
+                    break;
+                }
+            }
+        }
     }
 
-    // ប្រើប្រាស់ JavaScript Redirect ធានាថាមិនចេញ Error Headers Sent
     echo '<script>window.location.href = "student_list.php";</script>';
     exit();
 }
@@ -79,6 +94,4 @@ if (isset($_POST['update'])) {
     </div>
 </body>
 </html>
-
-
 
