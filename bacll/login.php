@@ -9,11 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'] ?? '';
 
     if (!empty($username)) {
+        // កំណត់ Session ទុកសម្រាប់ប្រើប្រាស់លើ Dashboard
         $_SESSION['user_id'] = 1;
         $_SESSION['username'] = $username;
         $_SESSION['joined_at'] = date('Y-m-d');
 
-        // ប្រើប្រាស់ JavaScript Redirect ធានាថាមិនចេញ Error headers already sent ទៀតទេ
+        // បញ្ជូនទៅកាន់ Dashboard ຜ່ານ JavaScript យ៉ាងមានសុវត្ថិភាព
         echo '<script>window.location.href = "dashboard.php";</script>';
         exit();
     } else {
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h1>Form Login</h1>
         <p>Enter Username and Password</p>
         <?php if(!empty($error)): ?>
-            <p style="color:red;"><?php echo $error; ?></p>
+            <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
         <form method="POST" action="">
             <input type="text" name="username" placeholder="username" required><br>
