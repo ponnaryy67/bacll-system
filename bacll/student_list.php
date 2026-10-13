@@ -6,6 +6,25 @@ if (!isset($_SESSION['user_id'])) {
     echo '<script>window.location.href = "login.php";</script>';
     exit();
 }
+
+$students = [];
+
+// ឆែកមើលថាតើ Database មានដំណើរការឬអត់
+if ($conn) {
+    // ករណីមាន Database ធម្មតា
+    $result = $conn->query("SELECT * FROM students");
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $students[] = $row;
+        }
+    }
+} else {
+    // ករណីគ្មាន Database (ពេលຢູ່លើ Render) បង្កើតទិន្នន័យគំរូសម្រាប់ Demo UI
+    $students = [
+        ['id' => 1, 'name' => 'Nary Pon', 'email' => 'nary@example.com', 'track' => 'Science Class Track'],
+        ['id' => 2, 'name' => 'Dara Chan', 'email' => 'dara@example.com', 'track' => 'Social Class Track']
+    ];
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +32,13 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <title>Student List - CRUD</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 30px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9fafb; }
+        h2 { color: #1f2937; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
         th { background-color: #2563eb; color: white; }
-        .btn { padding: 6px 12px; text-decoration: none; border-radius: 4px; color: white; display: inline-block; }
-        .btn-add { background: #10b981; margin-bottom: 10px; }
+        .btn { padding: 6px 12px; text-decoration: none; border-radius: 4px; color: white; display: inline-block; font-size: 14px; }
+        .btn-add { background: #10b981; margin-bottom: 15px; }
         .btn-edit { background: #f59e0b; font-size: 12px; }
         .btn-delete { background: #ef4444; font-size: 12px; }
     </style>
@@ -37,18 +57,24 @@ if (!isset($_SESSION['user_id'])) {
             <th>Track</th>
             <th>Actions</th>
         </tr>
-        <?php while($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= $row['id']; ?></td>
-            <td><?= htmlspecialchars($row['name']); ?></td>
-            <td><?= htmlspecialchars($row['email']); ?></td>
-            <td><?= htmlspecialchars($row['track']); ?></td>
-            <td>
-                <a href="student_edit.php?id=<?= $row['id']; ?>" class="btn btn-edit">Edit</a>
-                <a href="student_list.php?delete=<?= $row['id']; ?>" class="btn btn-delete" onclick="return confirm('តើអ្នកពិតជាចង់លុបមែនទេ?')">Delete</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
+        <?php if (!empty($students)): ?>
+            <?php foreach($students as $row): ?>
+            <tr>
+                <td><?= htmlspecialchars($row['id']); ?></td>
+                <td><?= htmlspecialchars($row['name']); ?></td>
+                <td><?= htmlspecialchars($row['email']); ?></td>
+                <td><?= htmlspecialchars($row['track']); ?></td>
+                <td>
+                    <a href="student_edit.php?id=<?= $row['id']; ?>" class="btn btn-edit">Edit</a>
+                    <a href="student_list.php?delete=<?= $row['id']; ?>" class="btn btn-delete" onclick="return confirm('តើអ្នកពិតជាចង់លុបមែនទេ?')">Delete</a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <tr>
+                <td colspan="5" style="text-align: center; color: #6b7280;">មិនមានទិន្នន័យសិស្សទេ</td>
+            </tr>
+        <?php endif; ?>
     </table>
 
 </body>
