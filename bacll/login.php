@@ -53,7 +53,7 @@ if (isset($_POST['login'])) {
         <h1>Form Login</h1>
         <p>Enter Username and Password</p>
         <?php if($error) echo "<p style='color:red;'>$error</p>"; ?>
-        <form method="POST">
+        <form method="POST" action="">
             <input type="text" name="username" placeholder="username" required><br>
             <input type="password" name="password" placeholder="password" required><br>
             <div class="btn-group">
