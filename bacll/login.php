@@ -8,7 +8,7 @@ if (isset($_POST['login'])) {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬនៅ
+    // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬអត់
     if ($conn) {
         $stmt = $conn->prepare("SELECT id, username, password, created_at FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
@@ -20,15 +20,15 @@ if (isset($_POST['login'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['joined_at'] = $user['created_at'];
-                header("Location: dashboard.php");
+                echo '<script>window.location.href = "dashboard.php";</script>';
                 exit();
             }
         }
         $error = "Username ឬ Password មិនត្រឹមត្រូវទេ!";
     } else {
-        // ករណីគ្មាន Database (ពេលอยู่លើ Render) ឱ្យវាអនុញ្ញាតឱ្យចូល Dashboard បានដោយរលូនដើម្បី Test មុខងារ
+        // ករណីគ្មាន Database (ពេលຢູ່លើ Render) ឱ្យវាបញ្ជូនទៅ Dashboard ຜ່ານ JavaScript តែម្តង
         $_SESSION['username'] = $username;
-        header("Location: dashboard.php");
+        echo '<script>window.location.href = "dashboard.php";</script>';
         exit();
     }
 }
