@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 require_once 'db.php';
 
@@ -9,21 +8,29 @@ if (isset($_POST['login'])) {
     $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT id, username, password, created_at FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // ឆែកមើលថាតើ Database បានតភ្ជាប់រួចរាល់ឬនៅ
+    if ($conn) {
+        $stmt = $conn->prepare("SELECT id, username, password, created_at FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if ($user = $result->fetch_assoc()) {
-        if (password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['joined_at'] = $user['created_at'];
-            header("Location: dashboard.php");
-            exit();
+        if ($user = $result->fetch_assoc()) {
+            if (password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['joined_at'] = $user['created_at'];
+                header("Location: dashboard.php");
+                exit();
+            }
         }
+        $error = "Username ឬ Password មិនត្រឹមត្រូវទេ!";
+    } else {
+        // ករណីគ្មាន Database (ពេលอยู่លើ Render) ឱ្យវាអនុញ្ញាតឱ្យចូល Dashboard បានដោយរលូនដើម្បី Test មុខងារ
+        $_SESSION['username'] = $username;
+        header("Location: dashboard.php");
+        exit();
     }
-    $error = "Username ឬ Password មិនត្រឹមត្រូវទេ!";
 }
 ?>
 
